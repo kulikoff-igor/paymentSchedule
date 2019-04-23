@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+
+  <head>
+
+    <title>Login</title>
+
+    <!-- Bootstrap core CSS-->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}"/>
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sb-admin.css}"/>
+
+  </head>
+
+  <body class="bg-dark">
+
+    <div class="container">
+      <div class="card card-login mx-auto mt-5">
+        <div class="card-header">Вход в программу "Платежей"</div>
+        <div class="card-body">
+          <form th:action="@{/paymentSchedule/login}" method="POST" class="form-signin">
+            <input type="text" id="login" name="login" th:placeholder="Login"
+                   class="form-control"/> <br/>
+            <input type="password" th:placeholder="Password"
+                   id="password" name="password" class="form-control"/> <br/>
+
+            <div align="center" th:if="${param.error}">
+              <p style="font-size: 20px; color: #FF1C19;">Введены не коректные данные!!!!!!!!!!!</p>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
+                    th:text="Войти"></button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script th:href="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:href="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script th:href="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+  </body>
+
+</html>

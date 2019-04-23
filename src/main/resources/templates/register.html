@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+
+<head>
+
+    <title>Register</title>
+
+    <!-- Bootstrap core CSS-->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"/>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/fontawesome-free/css/all.min.css}"/>
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sb-admin.css}"/>
+
+</head>
+
+<body class="bg-dark">
+
+<div class="container">
+    <div class="card card-register mx-auto mt-5">
+        <div class="card-header">Register an Account</div>
+        <div class="card-body">
+            <form autocomplete="off" action="#" th:action="@{/register}"
+                  th:object="${user}" method="post" class="form-horizontal"
+                  role="form">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <input type="text" id="firstName"  th:field="*{name}" class="form-control" placeholder="First name"
+                                       required="required" autofocus="autofocus">
+                                <label for="firstName">First name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <input type="text" id="lastName" th:field="*{lastName}" class="form-control" placeholder="Last name"
+                                       required="required">
+                                <label for="lastName">Last name</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label-group">
+                        <input type="text" id="inputLogin" th:field="*{login}" class="form-control" placeholder="Login"
+                               required="required">
+                        <label for="inputLogin">Login</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label-group">
+                        <input type="password" id="inputPassword" th:field="*{password}" class="form-control" placeholder="Password"
+                               required="required">
+                        <label for="inputPassword">Password</label>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <label>Role user - </label>
+                    <label class="checkbox-inline">
+                        <input th:name="adminRole" type="checkbox">ADMIN
+                    </label>
+                    <label class="checkbox-inline">
+                        <input th:name="omtsRole" type="checkbox">OMTS
+                    </label>
+                    <label class="checkbox-inline">
+                        <input th:name="reportRole" type="checkbox">REPORT
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" href="register">Register</button>
+                <h2><span class="text-success" th:utext="${successMessage}"></span></h2>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="../static/vendor/jquery/jquery.min.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+</body>
+
+</html>

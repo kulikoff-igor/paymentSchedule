@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Формирование заявки</title>
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.css}" rel="stylesheet">
+    <link th:href="@{/css/sb-admin.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui.min.css}"/>
+
+</head>
+
+<body id="page-top">
+
+<nav class="navbar navbar-expand navbar-dark bg-dark static-top noprint">
+
+    <a class="navbar-brand mr-1" href="/">График Платежей</a>
+
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <i class="fas fa-bars"></i>
+    </button>
+
+
+    <!-- Navbar -->
+    <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user-circle fa-fw"> </i>
+                <label id="userFirstName"></label>
+                <label id="userLastName"></label>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">Activity Log</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+            </div>
+        </li>
+    </ul>
+
+</nav>
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav noprint">
+        <li class="nav-item ">
+            <a class="nav-link" href="plannedPayment">
+                <i class="fas fa-fw fa-database"></i>
+                <span>Планируемый график</span>
+            </a>
+        </li>
+
+        <li class="nav-item active">
+            <a class="nav-link" href="./applicationFormation">
+                <i class="fas fa-fw fa-list-alt"></i>
+                <span>Формирование заявки</span></a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="paymentConfirmation">
+                <i class="fas fa-fw fa-check"></i>
+                <span>Подтверждение платежей</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="reportFormAllPayment">
+                <i class="fas fa-fw  fa-book"></i>
+                <span>Отчет</span>
+            </a>
+        </li>
+    </ul>
+
+    <div id="content-wrapper">
+
+        <div class="container-fluid noprint">
+
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">График Платежей</a>
+                </li>
+                <li class="breadcrumb-item active">Формирование заявки</li>
+            </ol>
+
+
+        </div>
+
+        <div class="card mb-3 ">
+            <div class="card-header ">
+                <div class="row " style="padding-bottom: 1%">
+                    <div class="col-12 text-center">
+                        <i class="fas fa-table">
+                        </i>Формирование заявки на оплату в бухгалтерию
+                    </div>
+
+                </div>
+
+                <div class="row currencyPanel">
+                    <div class="col-2">
+                        <button id="printReport" type="button" class="btn btn-info btn-circle noprint"
+                                style="width: 90%;text-align: center"><i
+                                class="fa fa-print"> </i> Печать
+                        </button>
+
+                    </div>
+                    <div class="col-3">
+                        <p>Общая сумма всех платежей по валютам : </p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body ">
+                <div class="row ">
+                    <div class="col-12 " style="padding-bottom: 5px">
+                        <form role="form">
+                            <div class="form-group">
+                                <label><i class="fa fa-calendar"></i> Планируемая дата платежа</label>
+                                <input type="date" id="selectDateOrder" class="form-control">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 noprint">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-10" style="margin: 0px">
+                                        <i class="fas fa-table"></i>
+                                        Добавление внепланового платежа
+                                    </div>
+                                    <div class="col-2" style="margin: 0px">
+                                        <button id="showAddPanelUnPlannedPayment" type="button" class="btn"
+                                                style="width: 100%; "><i
+                                                class="fa fa-plus-circle"></i>
+                                        </button>
+                                        <button id="addUnPlannedPayment" type="button"
+                                                class="btn btn-success btn-circle"
+                                                style="width: 48%; display: none"><i
+                                                class="fa fa-edit"></i>
+                                        </button>
+                                        <button id="cancelAddUnPlannedPayment" type="button"
+                                                class="btn btn-warning btn-circle " style="width: 48%; display: none"><i
+                                                class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" id="panelAddUnPlannedPayment" style="display: none">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Предприятие</label>
+                                                <input id="companyAddUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-3">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Объект назначения</label>
+                                                <input id="destinationObjectAddUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Договор</label>
+                                                <input id="contractAddUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-1">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Сумма</label>
+                                                <input type="number" id="amountAddUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="form-group">
+                                            <label>Валюта</label>
+                                            <select id="currencyAddUnPlanned" class="form-control">
+                                                <option>BLR</option>
+                                                <option>RUS</option>
+                                                <option>EUR</option>
+                                                <option>USD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Условия оплаты</label>
+                                                <input id="conditionsAddUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3" id="panelEditUnPlannedPayment" style="display: none">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-9" style="margin: 0px">
+                                        <i class="fas fa-table"></i>
+                                        Редактировать не запланированный платеж
+                                    </div>
+                                    <div class="col-3" style="margin: 0px">
+                                        <button id="editUnPlannedPayment" type="button"
+                                                class="btn btn-success btn-circle"
+                                                style="width: 30%"><i
+                                                class="fa fa-edit"></i>
+                                        </button>
+                                        <button id="deleteUnPlannedPayment" type="button"
+                                                class="btn btn-danger btn-circle "
+                                                style="width: 30%"><i
+                                                class="fa fa-minus"></i>
+                                        </button>
+                                        <button id="cancelEditUnPlannedPayment" type="button"
+                                                class="btn btn-warning btn-circle " style="width: 30%"><i
+                                                class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Предприятие</label>
+                                                <input id="companyEditUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-3">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Объект назначения</label>
+                                                <input id="destinationObjectEditUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Договор</label>
+                                                <input id="contractEditUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-1">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Сумма</label>
+                                                <input type="number" id="amountEditUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="form-group">
+                                            <label>Валюта</label>
+                                            <select id="currencyEditUnPlanned" class="form-control">
+                                                <option>BLR</option>
+                                                <option>RUS</option>
+                                                <option>EUR</option>
+                                                <option>USD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Условия оплаты</label>
+                                                <input id="conditionsEditUnPlanned" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card mb-3 ">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                Внеплановые заявки
+            </div>
+            <div class="card-body print">
+                <div class="table-responsive print">
+                    <table class="table table-bordered table-hover print " id="dataTableUnPlannedPayment" width="100%"
+                           cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Наименование предприятия</th>
+                            <th>Объект назначения</th>
+                            <th>Договор</th>
+                            <th>Сумма</th>
+                            <th>Валюта платежа</th>
+                            <th>Условия оплаты</th>
+                            <th>Ответственный</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                Заявки на оплату по графику
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table print" id="dataTablePlannedPayment" width="100%"
+                           cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Наименование предприятия</th>
+                            <th>Объект назначения</th>
+                            <th>Договор</th>
+                            <th>Сумма</th>
+                            <th>Валюта платежа</th>
+                            <th>Условия оплаты</th>
+                            <th>Ответственный</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Наименование предприятия</th>
+                            <th>Объект назначения</th>
+                            <th>Договор</th>
+                            <th>Сумма</th>
+                            <th>Валюта платежа</th>
+                            <th>Условия оплаты</th>
+                            <th>Ответственный</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded noprint" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Page level plugin JavaScript-->
+<script th:src="@{/js/jquery-ui.min.js}"></script>
+<script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+<script th:src="@{/vendor/datatables/jquery.dataTables.js}"></script>
+<script th:src="@{/vendor/datatables/dataTables.bootstrap4.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin.min.js}"></script>
+<script th:src="@{/js/applicationFormation.js}"></script>
+
+<!-- Demo scripts for this page-->
+
+</body>
+
+</html>
